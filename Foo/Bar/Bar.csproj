@@ -80,7 +80,7 @@
       <DependentUpon>SimpleMotionDeviceView.xaml</DependentUpon>
     </Compile>
     <Compile Include="SimpleMotionDeviceViewModel.cs" />
-    <Compile Include="YBitmap.cs" />
+    <Compile Include="Common\YBitmap.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

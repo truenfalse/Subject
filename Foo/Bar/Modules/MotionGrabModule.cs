@@ -35,7 +35,7 @@ namespace Bar.Modules
         #region Public Method
         public override void Play()
         {
-
+            // 구동전 체크
             if (Motion == null)
             {
                 ErrorCode = -1;
@@ -49,9 +49,11 @@ namespace Bar.Modules
                 return;
             }
 
+            // 입력데이터 얻기
             MotionGrabModuleInputParams motionGrabInputParams = (InputParams as MotionGrabModuleInputParams);
             double TargetPosition = motionGrabInputParams.TargetPosition;
 
+            // 처리
             int iResult = Motion.Move(TargetPosition);
             if(iResult != 0)
             {
@@ -72,6 +74,9 @@ namespace Bar.Modules
                 Message = "Image Grab Error";
                 ErrorCode = -4;
             }
+            // 처리완료
+
+            // 결과 입력
             (OutputParams as MotionGrabModuleOutputParams).OutputImage = GrabbedImage;
         }
         public override void Continuous()
