@@ -1,0 +1,77 @@
+﻿<UserControl x:Class="Bar.SimpleMotionDeviceView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:converters="clr-namespace:Bar.Converters"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Bar"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" Background="White">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"></ColumnDefinition>
+            <ColumnDefinition Width="500"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <StackPanel>
+            <DockPanel LastChildFill="True">
+                <TextBlock Text="Velocity" DockPanel.Dock="Left" Margin="5"></TextBlock>
+                <TextBox x:Name="textBoxVelocity" Text="{Binding Device.Params.MotionSpeed}" HorizontalAlignment="Stretch"></TextBox>
+            </DockPanel>
+            <DockPanel LastChildFill="True">
+                <TextBlock Text="TargetPosition" DockPanel.Dock="Left" Margin="5"></TextBlock>
+                <TextBox x:Name="textTargetPosition" HorizontalAlignment="Stretch"></TextBox>
+            </DockPanel>
+            <DockPanel LastChildFill="True">
+                <TextBlock Text="TriggerPosition" DockPanel.Dock="Top" Margin="5" TextAlignment="Center"></TextBlock>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Center">
+                    <Button Content="ADD" Margin="5" Width="50" Command="{Binding TriggerPositionAddCommand}"></Button>
+                    <Button Content="SET" Margin="5" Width="50" Command="{Binding TriggerPositionSetCommand}"></Button>
+                </StackPanel>
+                <ListBox ItemsSource="{Binding TriggerPosition}" DockPanel.Dock="Top" HorizontalContentAlignment="Stretch">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{Binding Index}"></TextBlock>
+                                <TextBox Grid.Column="1" Text="{Binding Value}"></TextBox>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Margin="10,0,0,0">
+            <Button Content="Move" Height="30" Command="{Binding MoveCommand}" CommandParameter="{Binding Path=Text,ElementName=textTargetPosition, Converter={x:Static converters:StringToDoubleConverter.Instance}}"></Button>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="IsMoving" VerticalAlignment="Center"></TextBlock>
+                <ToggleButton IsChecked="{Binding Device.IsMoving, Mode=OneWay}" Width="25" Height="25" Margin="5">
+                    <ToggleButton.Style>
+                        <Style TargetType="ToggleButton">
+                            <Style.Triggers>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter Property="Background" Value="Red"></Setter>
+                                </Trigger>
+                                <Trigger Property="IsChecked" Value="False">
+                                    <Setter Property="Background" Value="Green"></Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ToggleButton.Style>
+                </ToggleButton>
+                <TextBlock Text="{Binding Device.Position, StringFormat={} CurrentPosition : {0}}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"></TextBlock>
+            </StackPanel>
+            <ScrollViewer VerticalScrollBarVisibility="Visible" Height="300">
+                <ListBox ItemsSource="{Binding DeviceMessages}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}"></TextBlock>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </ScrollViewer>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="Bar.SimpleImageDeviceView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Bar"
+             xmlns:converters="clr-namespace:Bar.Converters"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type={x:Type local:SimpleImageDeviceViewModel}}"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="100"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <DockPanel LastChildFill="True">
+            <Button Content="Browse" DockPanel.Dock="Bottom" Command="{Binding BrowseCommand}"></Button>
+            <ScrollViewer DockPanel.Dock="Bottom">
+                <ScrollViewer.Style>
+                    <Style TargetType="ScrollViewer">
+                        <Setter Property="BorderBrush" Value="Black"></Setter>
+                        <Setter Property="BorderThickness" Value="2"></Setter>
+                    </Style>
+                </ScrollViewer.Style>
+                <ListView ItemsSource="{Binding Device.Params.ImagePathCollection}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}"></TextBlock>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollViewer>
+        </DockPanel>
+        <Image Grid.Column="1" Source="{Binding OutputImage, Converter={x:Static converters:BitmapToImageSourceConverter.Instance}}"></Image>
+        <DockPanel Grid.Column="2" LastChildFill="True">
+            <Button x:Name="Grab" Content="Grab" Command="{Binding GrabCommand}" Height="50" DockPanel.Dock="Top"></Button>
+            <TextBlock TextWrapping="Wrap" Text="{Binding Device.Message}" Background="White" DockPanel.Dock="Top"></TextBlock>
+        </DockPanel>
+    </Grid>
+</UserControl>
